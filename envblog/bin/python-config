@@ -1,4 +1,4 @@
-#!/home/stefan/programming/myApp/myBlog/bin/python
+#!/home/stefan/programming/myApp/envblog/bin/python
 
 import sys
 import getopt
