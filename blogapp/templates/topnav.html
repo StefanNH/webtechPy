@@ -3,22 +3,36 @@
   {{super()}}
   <link rel="stylesheet" href="{{url_for('.static', filename='customstyles.css')}}">
 {% endblock %}
-{% block title%} {{title}} {% endblock %}
 
+{% block title%} {{title}} {% endblock %}
 
 {% block navbar %}
 <div class="tweaks"></div>
  <nav class="navbar navbar-inverse">
   <ul class="nav navbar-nav">
-    <li><a href="/">Home</a></li>
-    <li><a href="/posts">Posts</a></li>
-    <li><a href="/users">Users</a></li>
+    <li><a href="{{ url_for('home') }}">Home</a></li>
+    <li><a href="{{ url_for('posts')}}">Posts</a></li>
+    <li><a href="{{ url_for('newpost')}}">Add</a></li>
     <li><a href="/about">About</a></li>
   </ul>
     <ul class="nav navbar-nav navbar-right ">
-      <li><a href="/register"><span class="glyphicon glyphicon-user"></span> Sign up</a></li>
-      <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+    {% if current_user.is_active==false %}
+      <li><a href="{{ url_for('register') }}"><span class="glyphicon glyphicon-user"></span> Sign up</a></li>
+      <li><a href="{{ url_for('login') }}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+    {% else %}
+      <li><a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-out"></span> logout</a></li>
+    {% endif %}
     </ul>
  </nav>
 </div>
-{% endblock %}
+{% endblock navbar%}
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+    <div class="alert alert-{{ category }}">
+        {{ message }}
+    </div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+{% block content %}{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "topnav.html" %}
+{% block content %}
+<div class="container"> 
+    <div class="row">
+    <form method="POST" action="{{ url_for('newpost') }}">
+        {{form.hidden_tag()}}
+        {% for field, errors in form.errors.items() %}
+        <div class="alert alert-warning">
+            {{ form[field].label }}: {{ ', '.join(errors) }}
+        </div>
+        {% endfor %}
+        {{ form.hidden_tag() }}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+            <div class="form-group">
+                {{form.title.label(class="form-control-label")}}
+                {{form.title(class="form-control form-control-lg")}}
+            </div>
+            <div class="form-group">
+                {{form.content.label(class="form-control-label")}}
+                {{form.content(class="form-control form-control-lg")}}
+            </div>
+            <div class="form-group">
+                {{form.submit(class="btn btn-lg btn-primary text-uppercase")}}
+            </div>                
+    </form>
+    </div>
+</div>
+{% endblock %}
