@@ -1,14 +1,24 @@
 {% extends "topnav.html" %}
 {% block content %}
+<h1>Welcome <code>{{ current_user.username }}</code></h1>
 <div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
     {% for post in posts %}
         <article class="media content-section">
           <div class="media-body">
-            <div class="article-metadata">
-              <a class="mr-2" href="#">{{ post.author.username }}</a>
-            </div>
-            <h2><a class="article-title" href="{{ url_for('posts', post_id=post.id) }}">{{ post.title }}</a></h2>
-            <p class="article-content">{{ post.content }}</p>
+              <div class="mr-2">posted by <code>{{ post.author.username }}</code> </div>
+            <h2><a class="well-lg" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h2>
+            <hr class="style13">
+              <p class="article-content">{{ post.content }}</p>
+            <hr class="style2"> <br>
           </div>
         </article>
     {% endfor %}
